@@ -1,0 +1,55 @@
+.flashcard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  background: linear-gradient(
+    135deg,
+    rgba(10, 10, 30, 0.8),
+    rgba(20, 20, 40, 0.8)
+  ); /* Cosmic gradient */
+  border: 1px solid rgba(32, 15, 47, 0.2); /* Subtle border */
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Cosmic glow effect */
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.front {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 50, 0.6)
+  ); /* Dark cosmic background */
+  color: #e0e0e0;
+}
+
+.back {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 100, 0.8)
+  ); /* Darker cosmic background */
+  color: #e0e0e0;
+  transform: rotateY(180deg);
+}
+
+.front,
+.back {
+  padding: 20px;
+  border-radius: 10px;
+}
