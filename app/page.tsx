@@ -6,9 +6,9 @@ import { useEffect } from 'react';
 const HomePage = () => {
   const router = useRouter()
 
-  // useEffect(() => {
-  //   router.push('/landing')
-  // }, [])
+  useEffect(() => {
+    router.push('/landing')
+  }, [])
 
   return null;
 };
