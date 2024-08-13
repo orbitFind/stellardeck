@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -35,12 +35,19 @@ const buttonStyle = {
   borderRadius: 2, // Rounded corners
 } as React.CSSProperties;
 
+const imageStyle = {
+  width: '30px',
+  height: '30px',
+  marginRight: '10px',
+} as React.CSSProperties;
+
 const Navbar: React.FC = () => {
   const { openModal } = useWaitlistModal();
 
   return (
     <AppBar position="static" sx={navbarStyle}>
       <Toolbar>
+        <img src="/logo.png" alt="Logo" style={imageStyle} />
         <Typography variant="h6" sx={typographyStyle}>
           StellarDeck
         </Typography>
