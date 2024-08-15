@@ -7,12 +7,18 @@ import { useAuth } from '@/context/AuthContext';
 import { model, systemPrompt } from '@/lib/gemini'; // Import your Gemini functions
 import CollectionSelectionModal from '@/components/dashboard/flashcards/modals/AIGenerateFlashCardModal'; // Import the new modal
 import { useToast } from '@/context/ToastContext';
-import { json } from 'stream/consumers';
+import { motion } from 'framer-motion';
 
 interface FlashcardModalProps {
     open: boolean;
     onClose: () => void;
 }
+
+const modalVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.9 },
+};
 
 const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
     const { addFlashcard, collections, getFlashcardsByCollectionId } = useFlashcard();
@@ -55,9 +61,8 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
             const prompt = `${systemPrompt}\n${flashcards.map(fc => `Q: ${fc.question}\nA: ${fc.answer}`).join('\n\n')}`;
             const response = await model.generateContent(prompt); // Generate new flashcard using the prompt
             if (response) {
-                const res = response.response.text();
+                const res = await response.response.text();
                 const cleanedString = res.replace(/```json|```|`/g, '').trim();
-
                 const jsonRes = JSON.parse(cleanedString);
                 const { question, answer } = jsonRes;
                 console.log(question, answer);
@@ -72,22 +77,27 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
 
     return (
         <>
-            <Modal open={open} onClose={onClose}>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
+            <Modal open={open} onClose={onClose} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <motion.div
+                    variants={modalVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ duration: 0.3 }}
+                    style={{
                         width: 400,
-                        bgcolor: 'background.default',
-                        borderRadius: 2,
-                        boxShadow: 24,
-                        p: 4,
                         background: 'linear-gradient(135deg, rgba(25, 25, 112, 0.9), rgba(0, 0, 0, 0.8))', // Cosmic gradient
+                        borderRadius: '12px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
+                        padding: '16px',
                         color: 'white',
                         border: '1px solid rgba(255, 255, 255, 0.2)', // Subtle border
                         overflow: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center', // Center content horizontally
+                        justifyContent: 'center', // Center content vertically
+                        position: 'relative', // Relative positioning for IconButton
                     }}
                 >
                     <IconButton
@@ -215,7 +225,7 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
                             Generate Flashcard
                         </CosmicButton>
                     </form>
-                </Box>
+                </motion.div>
             </Modal>
             <CollectionSelectionModal
                 open={isCollectionModalOpen}

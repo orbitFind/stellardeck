@@ -107,9 +107,6 @@ const Navbar: React.FC = () => {
                 },
               }}
             >
-              <MenuItem component={Link} href="/profile" onClick={handleMenuClose}>
-                <PersonIcon sx={{ mr: 1 }} /> Profile
-              </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <LogoutIcon sx={{ mr: 1 }} /> Logout
               </MenuItem>

@@ -11,6 +11,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useFlashcard } from '@/context/FlashcardContext';
 import CosmicButton from '@/components/layout/ui/CosmicButton'; // Import the CosmicButton component
+import { motion } from 'framer-motion'; // Import framer-motion
 
 interface EditFlashcardModalProps {
     open: boolean;
@@ -19,6 +20,12 @@ interface EditFlashcardModalProps {
     initialQuestion: string;
     initialAnswer: string;
 }
+
+const modalVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.9 },
+};
 
 const EditFlashcardModal: React.FC<EditFlashcardModalProps> = ({
     open,
@@ -46,21 +53,22 @@ const EditFlashcardModal: React.FC<EditFlashcardModalProps> = ({
     };
 
     return (
-        <Modal open={open} onClose={onClose}>
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
+        <Modal open={open} onClose={onClose} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <motion.div
+                variants={modalVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+                style={{
                     width: 400,
-                    bgcolor: 'background.default',
-                    borderRadius: 2,
-                    boxShadow: 24,
-                    p: 4,
                     background: 'linear-gradient(135deg, rgba(25, 25, 112, 0.9), rgba(0, 0, 0, 0.8))', // Cosmic gradient
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
+                    padding: '16px',
                     color: 'white',
                     border: '1px solid rgba(255, 255, 255, 0.2)', // Subtle border
+                    position: 'relative', // For the IconButton
                 }}
             >
                 <IconButton
@@ -160,17 +168,22 @@ const EditFlashcardModal: React.FC<EditFlashcardModalProps> = ({
                             {loading ? <CircularProgress size={24} /> : 'Save'}
                         </CosmicButton>
                         <Button
-                            variant="outlined"
+                            variant="contained"
                             color="secondary"
                             onClick={onClose}
-                            sx={{ mt: 2, ml: 1 }}
+                            sx={{
+                                mt: 2, ml: 1, bgcolor: 'rgba(255, 0, 0, 0.5)',
+                                '&:hover': {
+                                    bgcolor: 'rgba(255, 0, 0, 0.7)'
+                                }
+                            }}
                         >
                             Cancel
                         </Button>
                     </Box>
                 </Box>
-            </Box>
-        </Modal>
+            </motion.div>
+        </Modal >
     );
 };
 

@@ -1,7 +1,7 @@
 .flashcardContainer {
   position: relative;
-  width: 300px; /* Ensure consistent width */
-  height: 250px; /* Adjust height to fit card and action buttons */
+  width: 300px;
+  height: 250px;
   margin-bottom: 50px;
 }
 
@@ -15,10 +15,10 @@
     135deg,
     rgba(10, 10, 30, 0.8),
     rgba(20, 20, 40, 0.8)
-  ); /* Cosmic gradient */
-  border: 1px solid rgba(32, 15, 47, 0.2); /* Subtle border */
+  );
+  border: 1px solid rgba(32, 15, 47, 0.2);
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Cosmic glow effect */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 .flipped {
@@ -39,20 +39,12 @@
 }
 
 .front {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.6),
-    rgba(0, 0, 50, 0.6)
-  ); /* Dark cosmic background */
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 50, 0.6));
   color: #e0e0e0;
 }
 
 .back {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.8),
-    rgba(0, 0, 100, 0.8)
-  ); /* Darker cosmic background */
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 100, 0.8));
   color: #e0e0e0;
   transform: rotateY(180deg);
 }
@@ -61,11 +53,11 @@
   display: flex;
   justify-content: space-between;
   padding: 8px;
-  background: rgba(0, 0, 0, 0.6); /* Background to distinguish buttons */
-  border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow for separation */
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.3);
 }
 
 .cardActions button {
-  margin: 0 4px; /* Margin for button spacing */
+  margin: 0 4px;
 }

@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Flashcard from '@/components/dashboard/flashcards/Flashcard';
 import { useFlashcard } from '@/context/FlashcardContext';
-import { Box, Typography, TextField, MenuItem, Select, FormControl, InputLabel, SelectChangeEvent, Grid, Container } from '@mui/material';
+import {
+    Box,
+    Typography,
+    TextField,
+    MenuItem,
+    Select,
+    FormControl,
+    Grid,
+    Container, SelectChangeEvent
+} from '@mui/material';
+import { motion } from 'framer-motion';
 
 interface FlashcardListProps {
     collectionId?: string; // Optional prop to filter flashcards by collection
@@ -14,62 +24,56 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ collectionId }) => {
 
     useEffect(() => {
         const getData = async () => {
-            // Fetch flashcards and collections when the component mounts
             await getFlashcards();
             await getCollections();
-        }
+        };
 
         getData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [getFlashcards, getCollections]);
 
-    // Handle collection selection change
     const handleCollectionChange = (event: SelectChangeEvent<string>) => {
-        setSelectedCollection(event.target.value as string);
+        setSelectedCollection(event.target.value);
     };
 
-    // Handle search input change
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
-    // Filter collections based on search term
-    const filteredCollections = collections.filter(collection =>
+    const filteredCollections = collections.filter((collection) =>
         collection.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Filter flashcards by the selected collection if collectionId is provided
     const filteredFlashcards = flashcards
-        .filter(flashcard => !selectedCollection || flashcard.collectionId === selectedCollection)
-        .filter(flashcard =>
-            flashcard.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            flashcard.answer.toLowerCase().includes(searchTerm.toLowerCase())
+        .filter((flashcard) => !selectedCollection || flashcard.collectionId === selectedCollection)
+        .filter(
+            (flashcard) =>
+                flashcard.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                flashcard.answer.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
     return (
         <Container maxWidth="lg" sx={{ p: 2 }}>
             <Box sx={{ mb: 4 }}>
-                {/* Collection Filter */}
                 <FormControl fullWidth margin="normal" sx={{
                     backgroundColor: 'rgba(0, 0, 0, 0.7)',
                     borderRadius: 1,
                     "& .MuiInputLabel-root": {
-                        color: 'white', // Ensure label is white
+                        color: 'white',
                     },
                     "& .MuiInputLabel-shrink": {
-                        color: 'white', // Ensure label stays white when shrunk
+                        color: 'white',
                     },
                     "& .MuiSelect-root": {
-                        color: 'white', // Ensure select text is white
+                        color: 'white',
                     },
                     "& .MuiSelect-icon": {
-                        color: 'white', // Ensure select arrow icon is white
+                        color: 'white',
                     },
                     "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: 'rgba(255, 255, 255, 0.5)', // Border color
+                        borderColor: 'rgba(255, 255, 255, 0.5)',
                     },
                     "&:hover .MuiOutlinedInput-notchedOutline": {
-                        borderColor: 'white', // Border color on hover
+                        borderColor: 'white',
                     },
                 }}>
                     <Select
@@ -77,8 +81,9 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ collectionId }) => {
                         onChange={handleCollectionChange}
                         displayEmpty
                         sx={{
-                            color: 'white', // Ensuring the selected text remains white
+                            color: 'white',
                         }}
+                        inputProps={{ 'aria-label': 'Without label' }}
                     >
                         <MenuItem value="">
                             <em>All Collections</em>
@@ -91,7 +96,6 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ collectionId }) => {
                     </Select>
                 </FormControl>
 
-                {/* Search Input */}
                 <TextField
                     label="Search"
                     variant="outlined"
@@ -99,29 +103,39 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ collectionId }) => {
                     margin="normal"
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    inputProps={{ style: { color: 'white' } }} // Ensure input text is white
-                    InputLabelProps={{ style: { color: 'white' } }} // Ensure label text is white
+                    inputProps={{ style: { color: 'white' } }}
+                    InputLabelProps={{ style: { color: 'white' } }}
                     sx={{
                         backgroundColor: 'rgba(0, 0, 0, 0.7)',
                         borderRadius: 1,
                         "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: 'rgba(255, 255, 255, 0.5)', // Border color
+                            borderColor: 'rgba(255, 255, 255, 0.5)',
                         },
                         "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: 'white', // Border color on hover
+                            borderColor: 'white',
                         },
                         "& .MuiInputBase-input": {
-                            color: 'white', // Ensure input text is white
+                            color: 'white',
                         }
                     }}
                 />
             </Box>
 
-            {/* Flashcards List */}
             {filteredFlashcards.length > 0 ? (
                 <Grid container spacing={4} alignItems="stretch">
-                    {filteredFlashcards.map(flashcard => (
-                        <Grid item key={flashcard.id} xs={12} sm={6} md={4} lg={3} sx={{ mx: 1 }}>
+                    {filteredFlashcards.map((flashcard, index) => (
+                        <Grid
+                            item
+                            key={flashcard.id}
+                            xs={12}
+                            sm={6}
+                            md={4}
+                            lg={3}
+                            component={motion.div}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: index * 0.1 }}
+                        >
                             <Flashcard
                                 id={flashcard.id}
                                 question={flashcard.question}
@@ -131,7 +145,11 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ collectionId }) => {
                     ))}
                 </Grid>
             ) : (
-                <Typography variant="h6" component="p" sx={{ fontFamily: 'Orbitron, sans-serif', color: 'white', mt: 2 }}>
+                <Typography
+                    variant="h6"
+                    component="p"
+                    sx={{ fontFamily: 'Orbitron, sans-serif', color: 'white', mt: 2 }}
+                >
                     No flashcards available.
                 </Typography>
             )}

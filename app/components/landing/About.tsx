@@ -1,20 +1,22 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { Box, Typography, Card } from '@mui/material';
-import { SpaceBar } from '@mui/icons-material'; // Example icon
+import { SpaceBar } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 
 const About: React.FC = () => {
     return (
         <Box
+            component={motion.div}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
             sx={{
                 p: 4,
                 color: 'white',
                 textAlign: 'center',
-                fontFamily: 'Orbitron, sans-serif', // Apply cosmic font family
-                // background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9))', // Cosmic background
-                // borderRadius: 2,
-                // boxShadow: 3,
+                fontFamily: 'Orbitron, sans-serif',
                 maxWidth: 1000,
                 mx: 'auto',
                 my: 5,
@@ -24,8 +26,10 @@ const About: React.FC = () => {
                 StellarDeck: Your Galactic Learning Companion
             </Typography>
             <Card
+                component={motion.div}
+                whileHover={{ scale: 1.05 }}
                 sx={{
-                    background: 'rgba(25, 25, 25, 0.9)', // Slightly lighter cosmic background for card
+                    background: 'rgba(25, 25, 25, 0.9)',
                     borderRadius: 2,
                     boxShadow: 3,
                     p: 3,

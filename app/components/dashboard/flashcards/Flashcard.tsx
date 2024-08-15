@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Card, CardContent, IconButton, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import styles from './Flashcard.module.css'; // Import CSS module
+import styles from './Flashcard.module.css';
 import { useFlashcard } from '@/context/FlashcardContext';
 import EditFlashcardModal from '@/components/dashboard/flashcards/modals/EditFlashCardModal';
 
@@ -18,8 +18,9 @@ const Flashcard: React.FC<FlashcardProps> = ({ id, question, answer }) => {
 
     const { deleteFlashcard } = useFlashcard();
 
-    const handleEditOpen = () => {
-        setFlipped(false); // Stop the flip animation
+    const handleEditOpen = (event: React.MouseEvent) => {
+        event.stopPropagation(); // Prevent triggering the flip animation
+        setFlipped(false);
         setIsModalOpen(true);
     };
 
@@ -31,13 +32,14 @@ const Flashcard: React.FC<FlashcardProps> = ({ id, question, answer }) => {
         setFlipped(prev => !prev);
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (event: React.MouseEvent) => {
+        event.stopPropagation(); // Prevent triggering the flip animation
         setFlipped(false);
         await deleteFlashcard(id);
     };
 
     return (
-        <Box className={styles.flashcardContainer} >
+        <Box className={styles.flashcardContainer}>
             <Card
                 sx={{
                     position: 'relative',
@@ -50,11 +52,9 @@ const Flashcard: React.FC<FlashcardProps> = ({ id, question, answer }) => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-
                 }}
-                onClick={handleClick}
             >
-                <Box className={`${styles.flashcard} ${flipped ? styles.flipped : ''}`}>
+                <Box className={`${styles.flashcard} ${flipped ? styles.flipped : ''}`} onClick={handleClick}>
                     <Box className={styles.front}>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
@@ -73,12 +73,12 @@ const Flashcard: React.FC<FlashcardProps> = ({ id, question, answer }) => {
             </Card>
             <Box className={styles.cardActions}>
                 <Tooltip title="Edit">
-                    <IconButton onClick={handleEditOpen} color="primary">
+                    <IconButton onClick={handleEditOpen} color="primary" aria-label="edit flashcard">
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                    <IconButton onClick={handleDelete} color="secondary">
+                    <IconButton onClick={handleDelete} color="secondary" aria-label="delete flashcard">
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>

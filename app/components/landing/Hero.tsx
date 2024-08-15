@@ -1,19 +1,17 @@
-"use client";
+'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 import CosmicButton from '../layout/ui/CosmicButton';
-import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
 
 const Hero: React.FC = () => {
-    const { ref, inView } = useInView({
-        triggerOnce: true, // Trigger animation only once when entering view
-        threshold: 0.1, // Percentage of the component that needs to be visible
-    });
-
     return (
         <Box
-            ref={ref}
+            component={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -22,19 +20,19 @@ const Hero: React.FC = () => {
                 textAlign: 'center',
                 padding: 2,
                 my: 5,
-                // Ensure animation is applied consistently
-                transition: 'animation 1s ease-in-out',
             }}
-            className={inView ? 'animate__animated animate__fadeInLeft' : ''}
         >
             <Typography
                 variant="h2"
-                component="h1"
                 color="white"
                 sx={{
                     fontFamily: 'Orbitron, sans-serif',
                 }}
                 gutterBottom
+                component={motion.div}
+                initial={{ y: -50 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.7 }}
             >
                 StellarDeck
             </Typography>
@@ -46,12 +44,25 @@ const Hero: React.FC = () => {
                     mb: 5,
                 }}
                 gutterBottom
+                component={motion.div}
+                initial={{ y: 50 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.7 }}
             >
                 Explore customizable flashcards and collaborative study decks that are light-years ahead.
             </Typography>
-            <CosmicButton variant="contained" color="primary" size="large" href='/dashboard'>
-                Get Started
-            </CosmicButton>
+            <Box whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} component={motion.div}>
+                <CosmicButton
+
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    href="/dashboard"
+                >
+                    Get Started
+                </CosmicButton>
+            </Box>
+
         </Box>
     );
 };

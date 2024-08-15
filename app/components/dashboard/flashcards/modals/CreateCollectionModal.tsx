@@ -3,6 +3,14 @@ import { Modal, Box, TextField, Typography, IconButton, CircularProgress } from 
 import CloseIcon from '@mui/icons-material/Close';
 import CosmicButton from '@/components/layout/ui/CosmicButton';
 import { useCreateCollection } from '@/hooks/useCreateCollection'; // Adjust the path as needed
+import { motion } from 'framer-motion';
+
+// Define animation properties
+const modalVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.9 },
+};
 
 interface CreateCollectionModalProps {
     open: boolean;
@@ -24,21 +32,28 @@ const CreateCollectionModal: React.FC<CreateCollectionModalProps> = ({ open, onC
     };
 
     return (
-        <Modal open={open} onClose={onClose}>
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
+        <Modal open={open} onClose={onClose} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <motion.div
+                variants={modalVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+                style={{
+                    position: 'relative', // Change to relative to position absolute children properly
                     width: 400,
-                    bgcolor: 'background.default',
+                    backgroundColor: 'background.default',
                     borderRadius: 2,
-                    boxShadow: 24,
-                    p: 4,
+                    boxShadow: '0px 0px 24px rgba(0, 0, 0, 0.5)',
+                    padding: 4,
                     background: 'linear-gradient(135deg, rgba(25, 25, 112, 0.9), rgba(0, 0, 0, 0.8))', // Cosmic gradient
                     color: 'white',
                     border: '1px solid rgba(255, 255, 255, 0.2)', // Subtle border
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center', // Center content horizontally
+                    justifyContent: 'center', // Center content vertically
+                    transform: 'translate(-50%, -50%)',
                 }}
             >
                 <IconButton
@@ -61,7 +76,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModalProps> = ({ open, onC
                         {error}
                     </Typography>
                 )}
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} style={{ width: '100%' }}>
                     <TextField
                         label="Collection Name"
                         variant="outlined"
@@ -104,7 +119,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModalProps> = ({ open, onC
                         {loading ? <CircularProgress size={24} /> : 'Add Collection'}
                     </CosmicButton>
                 </form>
-            </Box>
+            </motion.div>
         </Modal>
     );
 };
