@@ -1,10 +1,8 @@
 "use client";
 import { createContext, useState, ReactNode, useContext } from 'react';
 import { Snackbar, Alert } from '@mui/material';
+import { ToastContextType } from '@/constants/toastTypes';
 
-type ToastContextType = {
-    showToast: (message: string, severity: 'success' | 'error') => void;
-};
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 

@@ -1,31 +1,9 @@
+"use client"
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { db } from '@/lib/firebase'; // Import your firebase setup
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
-
-interface Flashcard {
-    id: string;
-    question: string;
-    answer: string;
-    collectionId: string;
-    userId: string;
-}
-
-interface Collection {
-    id: string;
-    name: string;
-    userId: string;
-}
-
-interface FlashcardContextType {
-    flashcards: Flashcard[];
-    collections: Collection[];
-    addFlashcard: (flashcard: Flashcard) => Promise<void>;
-    updateFlashcard: (id: string, updatedFlashcard: Partial<Omit<Flashcard, 'id'>>) => Promise<void>;
-    deleteFlashcard: (id: string) => Promise<void>;
-    getFlashcards: () => Promise<void>;
-    getCollections: () => Promise<void>;
-    getFlashcardsByCollectionId: (collectionId: string) => Promise<Flashcard[]>;
-}
+import { Collection, Flashcard, FlashcardContextType } from '@/constants/flashcardTypes';
 
 const FlashcardContext = createContext<FlashcardContextType | undefined>(undefined);
 

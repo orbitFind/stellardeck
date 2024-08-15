@@ -77,7 +77,7 @@ const Navbar: React.FC = () => {
       <Toolbar>
         <Link href="/" style={{ textDecoration: "none" }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Image src="/logo.png" alt="Logo" style={imageStyle} width={30} height={30} />
+            <Image src="/icons/logo.png" alt="Logo" style={imageStyle} width={30} height={30} />
             <Typography variant="h6" sx={typographyStyle}>
               StellarDeck
             </Typography>

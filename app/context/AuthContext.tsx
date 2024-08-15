@@ -1,16 +1,9 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useState, ReactNode, use } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth } from '@/lib/firebase';
-import { User as FirebaseUser, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, UserCredential } from 'firebase/auth';
-
-interface AuthContextType {
-    currentUser: FirebaseUser | null;
-    login: (email: string, password: string) => Promise<UserCredential>;
-    register: (email: string, password: string) => Promise<UserCredential>;
-    logout: () => Promise<void>;
-    setCurrentUser: (user: FirebaseUser) => void;
-}
+import { User as FirebaseUser, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { AuthContextType, AuthProviderProps } from '@/constants/authTypes';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -21,10 +14,6 @@ export const useAuth = (): AuthContextType => {
     }
     return context;
 };
-
-interface AuthProviderProps {
-    children: ReactNode;
-}
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);

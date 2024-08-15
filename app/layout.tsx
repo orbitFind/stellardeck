@@ -2,40 +2,57 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
-import { ToastProvider } from "@/context/ToastContext";
 import StarryBackground from "./components/layout/StarryBackground";
 import ClientAnalytics from "./lib/clientAnalytics";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, ToastProvider } from "./context";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: 'StellarDeck',
-  description: 'A next-gen flashcard platform that transforms learning into a cosmic journey with AI-driven insights and customizable study decks.',
+const websiteUrl = "https://stellardeck.vercel.app";
+export const metadata: Metadata = {
+  title: "StellarDeck",
+  description:
+    "A next-gen flashcard platform that transforms learning into a cosmic journey with AI-driven insights and customizable study decks.",
+  metadataBase: new URL(websiteUrl),
   openGraph: {
-    title: 'StellarDeck',
-    description: 'A next-gen flashcard platform that transforms learning into a cosmic journey with AI-driven insights and customizable study decks.',
-    url: 'https://stellardeck.vercel.app',
+    title: "StellarDeck",
+    description:
+      "A next-gen flashcard platform that transforms learning into a cosmic journey with AI-driven insights and customizable study decks.",
+    url: websiteUrl,
     images: [
       {
-        url: '/icons/logo.png',
+        url: "/icons/logo.png",
         width: 1200,
         height: 630,
-        alt: 'StellarDeck Open Graph Image',
+        alt: "StellarDeck Open Graph Image",
       },
     ],
-    type: 'website',
+    type: "website",
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/icons/apple-touch-icon.png',
+    icon: "/favicon.ico",
+    apple: "/icons/apple-touch-icon.png",
     other: [
       {
-        rel: 'manifest',
-        url: '/manifest.json',
+        rel: "manifest",
+        url: "manifest.json",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: websiteUrl,
+    title: "StellarDeck",
+    description:
+      "A space-themed flashcard SaaS for collaborative learning and customizable study decks.",
+    images: [
+      {
+        url: "/icons/twitter_card.png",
+        width: 1200,
+        height: 630,
+        alt: "StellarDeck Twitter Image",
       },
     ],
   },
