@@ -8,9 +8,9 @@ import StarryBackground from "./components/layout/StarryBackground";
 import ClientAnalytics from "./lib/clientAnalytics";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-import { WaitlistModalProvider } from "./context/WaitlistFormContext";
 
 import "animate.css"
+import { AuthProvider } from "./context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +30,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ToastProvider>
-          <WaitlistModalProvider>
+          <AuthProvider>
+
             <div style={{
               display: 'flex',
               flexDirection: 'column',
@@ -43,7 +44,7 @@ export default function RootLayout({
               <main style={{ flex: 1, overflow: "auto" }}>{children}</main>
               <Footer />
             </div>
-          </WaitlistModalProvider>
+          </AuthProvider>
         </ToastProvider>
         <ClientAnalytics />
       </body>

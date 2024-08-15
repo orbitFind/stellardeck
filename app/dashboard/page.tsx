@@ -1,33 +1,47 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { FlashcardProvider } from '@/context/FlashcardContext';
+import { FlashcardProvider, useFlashcard } from '@/context/FlashcardContext';
 import FlashcardList from '@/components/dashboard/flashcards/FlashCardList';
-import FlashcardModal from '@/components/dashboard/flashcards/FlashCardModal';
+import FlashcardModal from '@/components/dashboard/flashcards/modals/CreateFlashCardModal';
 import CosmicButton from '@/components/layout/ui/CosmicButton';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import CreateCollectionModal from '@/components/dashboard/flashcards/modals/CreateCollectionModal';
 
 const FlashcardsPage: React.FC = () => {
     const [modalOpen, setModalOpen] = useState(false);
+    const [collectionModalOpen, setCollectionModalOpen] = useState(false);
+
+    const handleCollectionModalOpen = () => setCollectionModalOpen(true);
+    const handleCollectionModalClose = () => setCollectionModalOpen(false);
+
 
     return (
-        <FlashcardProvider>
-            <Box sx={{ p: 4, color: 'white' }}>
-                <Typography variant="h4" gutterBottom>
-                    Flashcards
-                </Typography>
-                <CosmicButton
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setModalOpen(true)}
-                    sx={{ mb: 2 }}
-                >
-                    Create New Flashcard
-                </CosmicButton>
-                <FlashcardList />
-                <FlashcardModal open={modalOpen} onClose={() => setModalOpen(false)} />
-            </Box>
-        </FlashcardProvider>
+        <ProtectedRoute>
+            <FlashcardProvider>
+                <Box sx={{ p: 4, color: 'white' }}>
+                    <Typography variant="h4" gutterBottom>
+                        Flashcards
+                    </Typography>
+                    <CosmicButton
+                        variant="contained"
+                        color="primary"
+                        onClick={() => setModalOpen(true)}
+                        sx={{ mb: 2, mr: 1 }}
+                    >
+                        Create New Flashcard
+                    </CosmicButton>
+                    <CosmicButton onClick={handleCollectionModalOpen} variant="contained"
+                        color="primary"
+                        sx={{ mb: 2 }}>Create New Collection</CosmicButton>
+                    <CreateCollectionModal open={collectionModalOpen} onClose={handleCollectionModalClose} />
+
+                    <FlashcardList />
+                    <FlashcardModal open={modalOpen} onClose={() => setModalOpen(false)} />
+                </Box>
+            </FlashcardProvider>
+        </ProtectedRoute>
     );
 };
 

@@ -3,11 +3,9 @@
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import CosmicButton from '../layout/ui/CosmicButton';
-import { useWaitlistModal } from '@/context/WaitlistFormContext';
 import { useInView } from 'react-intersection-observer';
 
 const Hero: React.FC = () => {
-    const { openModal } = useWaitlistModal();
     const { ref, inView } = useInView({
         triggerOnce: true, // Trigger animation only once when entering view
         threshold: 0.1, // Percentage of the component that needs to be visible
@@ -51,8 +49,8 @@ const Hero: React.FC = () => {
             >
                 Explore customizable flashcards and collaborative study decks that are light-years ahead.
             </Typography>
-            <CosmicButton variant="contained" color="primary" size="large" onClick={openModal}>
-                Join Waitlist
+            <CosmicButton variant="contained" color="primary" size="large" href='/dashboard'>
+                Get Started
             </CosmicButton>
         </Box>
     );

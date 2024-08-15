@@ -1,5 +1,12 @@
-.flashcard {
+.flashcardContainer {
   position: relative;
+  width: 300px; /* Ensure consistent width */
+  height: 250px; /* Adjust height to fit card and action buttons */
+  margin-bottom: 50px;
+}
+
+.flashcard {
+  position: absolute;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
@@ -27,6 +34,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .front {
@@ -48,8 +57,15 @@
   transform: rotateY(180deg);
 }
 
-.front,
-.back {
-  padding: 20px;
-  border-radius: 10px;
+.cardActions {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.6); /* Background to distinguish buttons */
+  border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow for separation */
+}
+
+.cardActions button {
+  margin: 0 4px; /* Margin for button spacing */
 }

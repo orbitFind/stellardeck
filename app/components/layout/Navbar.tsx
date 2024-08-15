@@ -1,13 +1,20 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import { alpha } from '@mui/material/styles';
-import CosmicButton from './ui/CosmicButton';
-import { useWaitlistModal } from '@/context/WaitlistFormContext';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useAuth } from '@/context/AuthContext'; // Import AuthContext
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import CosmicButton from '@/components/layout/ui/CosmicButton';
 
 // Styles for the cosmic navbar
 const navbarStyle = {
@@ -42,18 +49,80 @@ const imageStyle = {
 } as React.CSSProperties;
 
 const Navbar: React.FC = () => {
-  const { openModal } = useWaitlistModal();
+  const { currentUser, logout } = useAuth(); // Use AuthContext
+  const router = useRouter();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+    handleMenuClose();
+  };
 
   return (
     <AppBar position="static" sx={navbarStyle}>
       <Toolbar>
-        <img src="/logo.png" alt="Logo" style={imageStyle} />
-        <Typography variant="h6" sx={typographyStyle}>
-          StellarDeck
-        </Typography>
-        <CosmicButton variant="contained" sx={buttonStyle} style={{ marginLeft: 'auto' }} onClick={openModal}>
-          Join Waitlist
-        </CosmicButton>
+        <Link href="/" style={{ textDecoration: "none" }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src="/logo.png" alt="Logo" style={imageStyle} />
+            <Typography variant="h6" sx={typographyStyle}>
+              StellarDeck
+            </Typography>
+          </div>
+        </Link>
+        {currentUser ? (
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+            <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+              <IconButton sx={{ color: "white" }}>
+                <DashboardIcon />
+              </IconButton>
+            </Link>
+            <IconButton color="inherit" onClick={handleMenuOpen}>
+              <PersonIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={isMenuOpen}
+              onClose={handleMenuClose}
+              slotProps={{
+                paper: {
+                  sx: {
+                    bgcolor: 'background.default',
+                    color: 'black',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                  },
+                },
+              }}
+            >
+              <MenuItem component={Link} href="/profile" onClick={handleMenuClose}>
+                <PersonIcon sx={{ mr: 1 }} /> Profile
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <LogoutIcon sx={{ mr: 1 }} /> Logout
+              </MenuItem>
+            </Menu>
+          </div>
+        ) : (
+          <Link href="/auth/signin" style={{ marginLeft: 'auto', textDecoration: 'none' }}>
+            <CosmicButton variant="contained" sx={buttonStyle}>
+              Login
+            </CosmicButton>
+          </Link>
+        )}
       </Toolbar>
     </AppBar>
   );

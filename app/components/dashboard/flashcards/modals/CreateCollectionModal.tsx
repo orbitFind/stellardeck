@@ -1,34 +1,26 @@
-// src/components/FlashcardModal.tsx
-
 import React, { useState } from 'react';
-import { Modal, Box, TextField, Button, Typography, IconButton } from '@mui/material';
+import { Modal, Box, TextField, Typography, IconButton, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { useFlashcard } from '@/context/FlashcardContext';
 import CosmicButton from '@/components/layout/ui/CosmicButton';
+import { useCreateCollection } from '@/hooks/useCreateCollection'; // Adjust the path as needed
 
-interface FlashcardModalProps {
+interface CreateCollectionModalProps {
     open: boolean;
     onClose: () => void;
 }
 
-const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
-    const { addFlashcard } = useFlashcard();
-    const [question, setQuestion] = useState('');
-    const [answer, setAnswer] = useState('');
+const CreateCollectionModal: React.FC<CreateCollectionModalProps> = ({ open, onClose }) => {
+    const [collectionName, setCollectionName] = useState('');
+    const { createCollection, error, loading } = useCreateCollection();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (question && answer) {
-            const newFlashcard = {
-                id: Date.now().toString(),
-                question,
-                answer,
-            };
-            addFlashcard(newFlashcard);
-            setQuestion('');
-            setAnswer('');
-            onClose(); // Close the modal after submission
+        if (collectionName.trim() === '') {
+            return;
         }
+        await createCollection(collectionName);
+        setCollectionName('');
+        onClose(); // Close the modal after submission
     };
 
     return (
@@ -47,7 +39,6 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
                     background: 'linear-gradient(135deg, rgba(25, 25, 112, 0.9), rgba(0, 0, 0, 0.8))', // Cosmic gradient
                     color: 'white',
                     border: '1px solid rgba(255, 255, 255, 0.2)', // Subtle border
-                    overflow: 'auto',
                 }}
             >
                 <IconButton
@@ -63,16 +54,21 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
                     <CloseIcon />
                 </IconButton>
                 <Typography variant="h6" component="h2" sx={{ fontFamily: 'Orbitron, sans-serif' }} gutterBottom>
-                    Create New Flashcard
+                    Create New Collection
                 </Typography>
+                {error && (
+                    <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+                        {error}
+                    </Typography>
+                )}
                 <form onSubmit={handleSubmit}>
                     <TextField
-                        label="Question"
+                        label="Collection Name"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
+                        value={collectionName}
+                        onChange={(e) => setCollectionName(e.target.value)}
                         required
                         sx={{
                             input: {
@@ -89,31 +85,12 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
                             },
                             backgroundColor: 'rgba(0, 0, 0, 0.7)', // Solid background
                             borderRadius: 1,
-                        }}
-                    />
-                    <TextField
-                        label="Answer"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={answer}
-                        onChange={(e) => setAnswer(e.target.value)}
-                        required
-                        sx={{
-                            input: {
+                            "& .MuiInputLabel-root": {
                                 color: 'white',
-                                '&::placeholder': {
-                                    color: 'white',
-                                },
                             },
-                            fieldset: {
-                                borderColor: 'rgba(255, 255, 255, 0.5)',
+                            "& .MuiInputLabel-shrink": {
+                                color: 'white',
                             },
-                            '&:hover fieldset': {
-                                borderColor: 'white',
-                            },
-                            backgroundColor: 'rgba(0, 0, 0, 0.7)', // Solid background
-                            borderRadius: 1,
                         }}
                     />
                     <CosmicButton
@@ -122,8 +99,9 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
                         color="primary"
                         fullWidth
                         sx={{ mt: 2 }}
+                        disabled={loading}
                     >
-                        Add Flashcard
+                        {loading ? <CircularProgress size={24} /> : 'Add Collection'}
                     </CosmicButton>
                 </form>
             </Box>
@@ -131,4 +109,4 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ open, onClose }) => {
     );
 };
 
-export default FlashcardModal;
+export default CreateCollectionModal;
