@@ -22,7 +22,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
             console.error(err);
             router.push('/auth/signin');
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (!currentUser) {

@@ -15,6 +15,7 @@ import { useAuth } from '@/context/AuthContext'; // Import AuthContext
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CosmicButton from '@/components/layout/ui/CosmicButton';
+import Image from 'next/image';
 
 // Styles for the cosmic navbar
 const navbarStyle = {
@@ -43,8 +44,6 @@ const buttonStyle = {
 } as React.CSSProperties;
 
 const imageStyle = {
-  width: '30px',
-  height: '30px',
   marginRight: '10px',
 } as React.CSSProperties;
 
@@ -78,7 +77,7 @@ const Navbar: React.FC = () => {
       <Toolbar>
         <Link href="/" style={{ textDecoration: "none" }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src="/logo.png" alt="Logo" style={imageStyle} />
+            <Image src="/logo.png" alt="Logo" style={imageStyle} width={30} height={30} />
             <Typography variant="h6" sx={typographyStyle}>
               StellarDeck
             </Typography>

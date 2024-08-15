@@ -20,7 +20,8 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ collectionId }) => {
         }
 
         getData();
-    }, [getFlashcards, getCollections]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Handle collection selection change
     const handleCollectionChange = (event: SelectChangeEvent<string>) => {

@@ -127,7 +127,7 @@ const SignIn: React.FC = () => {
                     </CosmicButton>
                 </form>
                 <Typography variant="body2" color="white" sx={{ mt: 2 }}>
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <Link href="/auth/register" color="secondary" underline="hover">
                         Register
                     </Link>
