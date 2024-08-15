@@ -33,9 +33,8 @@ const SignIn: React.FC = () => {
             }
 
             localStorage.setItem('user', JSON.stringify(user));
-            router.push('/dashboard'); // Redirect to home or dashboard
+            router.push('/dashboard');
         } catch (err) {
-            console.error(err);
             showToast('Failed to sign in. Please try again.', 'error');
         }
     };

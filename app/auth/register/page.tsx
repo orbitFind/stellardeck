@@ -34,7 +34,9 @@ const Register: React.FC = () => {
         }
 
         try {
-            await register(email, password);
+            const UserCredentials = await register(email, password);
+            const user = UserCredentials.user;
+            localStorage.setItem('user', JSON.stringify(user));
             router.push('/dashboard'); // Redirect to home or dashboard
         } catch (err) {
             showToast('Failed to create an account. Please try again.', 'error');
